@@ -1,32 +1,34 @@
 package com.example.server.mapper;
 
-import com.example.server.entity.UserEntity;
+import com.example.server.entity.User;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Mapper
+@Component
 public interface UserMapper {
     @Select("SELECT * FROM users")
     @Results({
-            @Result(property = "userSex", column = "user_sex"),
-            @Result(property = "nickName", column = "nick_name")
+            @Result(property = "username", column = "username"),
+            @Result(property = "password", column = "password")
     })
-    List<UserEntity> getAll();
+    List<User> getAll();
 
-    @Select("SELECT * FROM users WHERE id = #{id}")
+    @Select("SELECT * FROM users WHERE username = #{username}")
     @Results({
-            @Result(property = "userSex", column = "user_sex"),
-            @Result(property = "nickName", column = "nick_name")
+            @Result(property = "username", column = "username"),
+            @Result(property = "password", column = "password")
     })
-    UserEntity getOne(Long id);
+    User getByName(String username);
 
-    @Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
-    void insert(UserEntity user);
+    @Insert("INSERT INTO users(username,password) VALUES(#{username}, #{password})")
+    void insert(User user);
 
-    @Update("UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}")
-    void update(UserEntity user);
+    @Update("UPDATE users SET password = #{password} WHERE username = #{username}")
+    void update(User user);
 
-    @Delete("DELETE FROM users WHERE id =#{id}")
-    void delete(Long id);
+    @Delete("DELETE FROM users WHERE username = #{username}")
+    void delete(String username);
 }
