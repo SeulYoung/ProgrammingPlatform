@@ -1,35 +1,55 @@
 package com.example.server.controller;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.example.server.entity.User;
+import com.example.server.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@SpringBootApplication
-//@RestController注解能够使项目支持Rest
+import java.util.*;
+
 @RestController
-//表示该controller类下所有的方法都公用的一级上下文根
-@RequestMapping(value = "/springboot")
+@RequestMapping(value = "/users")
 public class TestController {
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String hello() {
-        return "Hello World";
+    private final UserMapper userMapper;
+
+    @Autowired
+    public TestController(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
-    //这里使用@RequestMapping注解表示该方法对应的二级上下文路径
-    @RequestMapping(value = "/getUserByGet", method = RequestMethod.GET)
-    String getUserByGet(@RequestParam(value = "userName") String userName) {
-        return "Hello " + userName;
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public List<User> getUserList() {
+        // 处理"/users/"的GET请求，用来获取用户列表
+        // 还可以通过@RequestParam从页面中传递参数来进行查询条件或者翻页信息的传递
+        return userMapper.getAll();
     }
 
-    //通过RequestMethod.POST表示请求需要时POST方式
-    @RequestMapping(value = "/getUserByPost", method = RequestMethod.POST)
-    String getUserByPost(@RequestParam(value = "userName") String userName) {
-        return "Hello " + userName;
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public String postUser(@ModelAttribute User user) {
+        // 处理"/users/"的POST请求，用来创建User
+        // 除了@ModelAttribute绑定参数之外，还可以通过@RequestParam从页面中传递参数
+        userMapper.insert(user);
+        return "success";
     }
 
-    //在入参设置@RequestBody注解表示接收整个报文体，这里主要用在接收整个POST请求中的json报文体，
-    //目前主流的请求报文也都是JSON格式了，使用该注解就能够获取整个JSON报文体作为入参，使用JSON解析工具解析后获取具体参数
-    @RequestMapping(value = "/getUserByJson", method = RequestMethod.POST)
-    String getUserByJson(@RequestBody String data) {
-        return "Json is " + data;
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public User getUser(@PathVariable String username) {
+        // 处理"/users/{id}"的GET请求，用来获取url中id值的User信息
+        // url中的id可通过@PathVariable绑定到函数的参数中
+        return userMapper.getByName(username);
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    public String putUser(@ModelAttribute User user) {
+        // 处理"/users/{id}"的PUT请求，用来更新User信息
+        userMapper.update(user);
+        return "success";
+    }
+
+    @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
+    public String deleteUser(@PathVariable String username) {
+        // 处理"/users/{id}"的DELETE请求，用来删除User
+        userMapper.delete(username);
+        return "success";
     }
 }
