@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/DemoTX.iml" filepath="$PROJECT_DIR$/DemoTX.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_tccommon/lib_tccommon.iml" filepath="$PROJECT_DIR$/lib_tccommon/lib_tccommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_tcsuperplayer/lib_tcsuperplayer.iml" filepath="$PROJECT_DIR$/lib_tcsuperplayer/lib_tcsuperplayer.iml" />
+    </modules>
+  </component>
+</project>
